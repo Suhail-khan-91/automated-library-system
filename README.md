@@ -47,4 +47,9 @@ A full-stack, responsive web application designed to streamline library operatio
 5.  **Access the App:** Open `http://localhost:3000` in your browser.
 
 ---
-*Developed as a Final Year Project for B.Sc. (Information Technology).*
+Developed By
+Khan Rukaiya Begum Asgar Ali
+&
+Gausiya Feroz Khan
+
+(Developed as a Final Year Project for B.Sc. Information Technology)
