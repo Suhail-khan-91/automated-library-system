@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Librarian Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <span class="navbar-brand">
+                📚 Library Portal
+                <span id="userBranding" class="brand-librarian ms-2" style="font-size:0.85rem;">Librarian</span>
+            </span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" onclick="showSection('pendingRequests')">Pending Requests</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSection('inventory')">Inventory</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showSection('transactions')">All Transactions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="logout()">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Pending Requests Section -->
+        <div id="pendingRequestsSection" class="section-div">
+            <h2>Pending Requests</h2>
+
+            <h5 class="mt-3">Checkout Requests</h5>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered bg-white">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Book Title</th>
+                            <th>Requested At</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="checkoutRequestsTableBody"></tbody>
+                </table>
+            </div>
+
+            <h5 class="mt-4">Return Requests</h5>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered bg-white">
+                    <thead class="table-warning">
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Book Title</th>
+                            <th>Requested At</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="returnRequestsTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Inventory Section -->
+        <div id="inventorySection" class="section-div d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2>Book Inventory</h2>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBookModal">Add New Book</button>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered bg-white">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventoryTableBody">
+                        <!-- Inventory will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Transactions Section -->
+        <div id="transactionsSection" class="section-div d-none">
+            <h2>All Transactions</h2>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered mt-3 bg-white">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Student</th>
+                            <th>Book Title</th>
+                            <th>Issue Date</th>
+                            <th>Due Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionsTableBody">
+                        <!-- Transactions will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Book Modal -->
+    <div class="modal fade" id="addBookModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Book</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addBookForm">
+                        <div class="mb-3">
+                            <label class="form-label">Title</label>
+                            <input type="text" id="bookTitle" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Author</label>
+                            <input type="text" id="bookAuthor" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Category</label>
+                            <input type="text" id="bookCategory" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Book</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Alert Modal -->
+    <div class="modal fade" id="customAlertModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Notice</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="customAlertMessage"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth('librarian');
+            loadPendingRequests();
+        });
+        
+        function showSection(section) {
+            document.querySelectorAll('.section-div').forEach(div => div.classList.add('d-none'));
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            
+            if(section === 'pendingRequests') {
+                document.getElementById('pendingRequestsSection').classList.remove('d-none');
+                event.target.classList.add('active');
+                loadPendingRequests();
+            } else if(section === 'inventory') {
+                document.getElementById('inventorySection').classList.remove('d-none');
+                event.target.classList.add('active');
+                loadInventory();
+            } else if(section === 'transactions') {
+                document.getElementById('transactionsSection').classList.remove('d-none');
+                event.target.classList.add('active');
+                loadAllTransactions();
+            }
+        }
+    </script>
+</body>
+</html>

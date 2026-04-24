@@ -17,7 +17,7 @@ async function initializeDatabase() {
             CREATE TABLE IF NOT EXISTS USERS (
                 user_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
-                email TEXT UNIQUE NOT NULL,
+                student_id TEXT UNIQUE NOT NULL,
                 password TEXT NOT NULL,
                 role TEXT NOT NULL CHECK(role IN ('student', 'librarian'))
             );
@@ -54,6 +54,7 @@ async function initializeDatabase() {
                 issue_date DATE NOT NULL,
                 due_date DATE NOT NULL,
                 status TEXT NOT NULL CHECK(status IN ('Issued', 'Returned')),
+                fine_amount INTEGER DEFAULT 0,
                 FOREIGN KEY (user_id) REFERENCES USERS(user_id),
                 FOREIGN KEY (book_id) REFERENCES BOOKS(book_id)
             );
@@ -71,19 +72,6 @@ async function initializeDatabase() {
         `);
 
         console.log('Tables created successfully.');
-
-        // Insert default admin/librarian
-        const adminEmail = 'admin@alms.edu';
-        const existingAdmin = await db.get('SELECT * FROM USERS WHERE email = ?', [adminEmail]);
-        
-        if (!existingAdmin) {
-            const hashedPassword = await bcrypt.hash('admin123', 10);
-            await db.run(`
-                INSERT INTO USERS (name, email, password, role) 
-                VALUES (?, ?, ?, ?)
-            `, ['Librarian Admin', adminEmail, hashedPassword, 'librarian']);
-            console.log('Default librarian user inserted.');
-        }
 
         // Insert dummy books
         const bookCount = await db.get('SELECT COUNT(*) as count FROM BOOKS');

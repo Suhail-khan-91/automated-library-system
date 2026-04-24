@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <span class="navbar-brand">
+                📚 Library Portal
+                <span id="userBranding" class="brand-student ms-2" style="font-size:0.85rem;"></span>
+            </span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link active" href="#" onclick="showSection('searchBooks', event)">Search Books</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('myBooks', event)">My Books</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('myHistory', event)">My History</a></li>
+                    <li class="nav-item ms-3"><a class="nav-link" href="#" onclick="logout()">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <div id="searchBooksSection" class="section-div">
+            <h2>Search Books</h2>
+            <div class="row mb-3">
+                <div class="col-md-6"><input type="text" id="searchInput" class="form-control" placeholder="Search by title..."></div>
+                <div class="col-md-4">
+                    <input type="text" id="categoryInput" class="form-control" placeholder="Category..." list="categoryOptions">
+                    <datalist id="categoryOptions"></datalist>
+                </div>
+                <div class="col-md-2"><button class="btn btn-secondary w-100" onclick="loadBooks()">Search</button></div>
+            </div>
+            <div class="row" id="booksGrid"></div>
+        </div>
+        <div id="myBooksSection" class="section-div d-none">
+            <h2>My Active Transactions</h2>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered mt-3 bg-white">
+                    <thead class="table-dark"><tr><th>Title</th><th>Author</th><th>Issue Date</th><th>Due Date</th><th>Current Fine</th><th>Action</th></tr></thead>
+                    <tbody id="myBooksTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+        <div id="myHistorySection" class="section-div d-none">
+            <h2>My Transaction History</h2>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered mt-3 bg-white">
+                    <thead class="table-dark"><tr><th>Title</th><th>Issue Date</th><th>Due Date</th><th>Status</th></tr></thead>
+                    <tbody id="myHistoryTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Custom Alert Modal -->
+    <div class="modal fade" id="customAlertModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Notice</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="customAlertMessage"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => { checkAuth('student'); populateStudentName(); loadBooks(); });
+        function showSection(section, event) {
+            document.querySelectorAll('.section-div').forEach(d => d.classList.add('d-none'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            if (event) event.target.classList.add('active');
+            if (section === 'searchBooks') { document.getElementById('searchBooksSection').classList.remove('d-none'); loadBooks(); }
+            else if (section === 'myBooks') { document.getElementById('myBooksSection').classList.remove('d-none'); loadMyBooks(); }
+            else if (section === 'myHistory') { document.getElementById('myHistorySection').classList.remove('d-none'); loadMyHistory(); }
+        }
+    </script>
+</body>
+</html>
