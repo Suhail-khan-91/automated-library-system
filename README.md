@@ -21,13 +21,28 @@ A full-stack, responsive web application designed to streamline library operatio
 * **Database:** SQLite3 (Relational).
 * **Authentication:** JWT (JSON Web Tokens) with tab-isolated `sessionStorage`.
 
+## ⚡ Quick Run Guide
+
+### Option 1: For Developers (VS Code)
+If you are using VS Code, simply open the integrated terminal and run:
+```bash
+npm start
+```
+*This automated command initializes the database and starts the server in one go.*
+
+### Option 2: One-Click Start (Windows Explorer)
+For non-technical users, locate the project folder in Windows File Explorer and:
+1. Double-click **`run_project.bat`**.
+2. Wait for the terminal to display "Server running on port 3000."
+3. Open Chrome and go to `http://localhost:3000`.
+
 ## 🔒 Key Security & Logic Fixes
 * **Tab Isolation:** Fixed session bleeding by migrating from `localStorage` to `sessionStorage`.
 * **Spam Protection:** Implemented backend checks to prevent duplicate pending requests for the same book.
 * **Race Condition Handling:** Automatic rejection of competing checkout requests once a book is issued.
 * **Role Validation:** Strict server-side middleware to ensure students cannot access librarian routes.
 
-## 📦 Installation & Setup
+## 📦 Manual Installation & Setup
 1.  **Clone the repo:**
     ```bash
     git clone https://github.com/Suhail-khan-91/automated-library-system.git
@@ -44,12 +59,10 @@ A full-stack, responsive web application designed to streamline library operatio
     ```bash
     node server.js
     ```
-5.  **Access the App:** Open `http://localhost:3000` in your browser.
 
 ---
-Developed By
-Khan Rukaiya Begum Asgar Ali
-&
-Gausiya Feroz Khan
+**Developed By**
+* **Khan Rukaiya Begum Asgar Ali**
+* **Gausiya Feroz Khan**
 
-(Developed as a Final Year Project for B.Sc. Information Technology)
+*(Developed as a Final Year Project for B.Sc. Information Technology)*
